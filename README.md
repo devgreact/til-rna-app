@@ -853,3 +853,17 @@ export default AboutScreen;
 - 화면상의 안전한 공간, 즉 상단 노치, 하단 홈바 등을 제외한 영역에 배치
 - SafeAreaView 로 배치되지 않으면 상단, 하단 기본 영역이 겹침
 - 옵션은 style
+
+## Alert
+
+## Modal
+
+## StatusBar
+
+## Pressable
+
+## ActivityIndicator
+
+## Switch
+
+## Picker
