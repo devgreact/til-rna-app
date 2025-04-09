@@ -856,14 +856,424 @@ export default AboutScreen;
 
 ## Alert
 
+```tsx
+import React from 'react';
+import {Alert, Button, SafeAreaView, StyleSheet, View} from 'react-native';
+
+const AboutScreen = (): JSX.Element => {
+  return (
+    <SafeAreaView style={styles.container}>
+      <View>
+        <Button
+          title="버튼"
+          onPress={() => {
+            Alert.alert('반가워요');
+          }}
+        />
+      </View>
+    </SafeAreaView>
+  );
+};
+// css
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  viewStyle: {
+    flex: 1,
+  },
+  input: {
+    borderWidth: 1,
+    padding: 10,
+    margin: 5,
+  },
+});
+export default AboutScreen;
+```
+
+- 기본형식
+
+```tsx
+Alert.alert(
+  title: string,  // 알림 제목
+  message?: string // 알림 본문 (생략가능)
+  buttons?: AlertButton[], // 버튼들의 배열
+  options?: AlertOptions  // 추가 설정
+)
+```
+
+- 일반적인 Alert
+
+```tsx
+<Button
+  title="버튼"
+  onPress={() => {
+    Alert.alert('반가워요', '메시지입니다.', [
+      {text: '확인', onPress: () => console.log('반가워')},
+    ]);
+  }}
+/>
+```
+
+- 일반적인 Alert 확인, 취소 버튼 처리
+
+```tsx
+<Button
+  title="버튼"
+  onPress={() => {
+    Alert.alert('반가워요', '메시지입니다.', [
+      {
+        text: '확인',
+        style: 'default',
+        onPress: () => console.log('확인이에요'),
+      },
+      {
+        text: '등록',
+        style: 'destructive',
+        onPress: () => console.log('등록이에요'),
+      },
+      {
+        text: '취소',
+        style: 'cancel',
+        onPress: () => console.log('취소입니다.'),
+      },
+    ]);
+  }}
+/>
+```
+
 ## Modal
+
+- 팝업창
+- visible, transparent, animationType : 팝업보임(useState활용), 배경투명, 모션(slide,fade,none)
+
+```tsx
+import React, {useState} from 'react';
+import {
+  Alert,
+  Button,
+  Modal,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
+
+const AboutScreen = (): JSX.Element => {
+  const [isVisible, setIsVisible] = useState(false);
+  return (
+    <SafeAreaView style={styles.container}>
+      <View>
+        <Button
+          title="버튼"
+          onPress={() => {
+            Alert.alert('모달창', '모달창보기 예제입니다.', [
+              {
+                text: '모달보기',
+                style: 'default',
+                onPress: () => setIsVisible(true),
+              },
+            ]);
+          }}
+        />
+      </View>
+
+      <Modal visible={isVisible} transparent={false} animationType="fade">
+        <View>
+          <Text>안녕하세요.</Text>
+          <Button title="창닫기" onPress={() => setIsVisible(false)} />
+        </View>
+      </Modal>
+    </SafeAreaView>
+  );
+};
+// css
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  viewStyle: {
+    flex: 1,
+  },
+  input: {
+    borderWidth: 1,
+    padding: 10,
+    margin: 5,
+  },
+});
+export default AboutScreen;
+```
 
 ## StatusBar
 
+- 상단 상태바의 스타일 조정
+- backgroundColor, barStyle : 배경색과 아이콘 색상(dark-content, light-content, default)
+- iOS 는 제외
+
+```tsx
+import React from 'react';
+import {SafeAreaView, StatusBar, StyleSheet, Text, View} from 'react-native';
+
+const AboutScreen = (): JSX.Element => {
+  return (
+    <SafeAreaView style={styles.container}>
+      <StatusBar backgroundColor={'hotpink'} barStyle={'default'} />
+      <View>
+        <Text>About 내용</Text>
+      </View>
+    </SafeAreaView>
+  );
+};
+// css
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  viewStyle: {
+    flex: 1,
+  },
+  input: {
+    borderWidth: 1,
+    padding: 10,
+    margin: 5,
+  },
+});
+export default AboutScreen;
+```
+
 ## Pressable
+
+- 사용자 터치관련한 기능 (관련기능 Button, TouchableOpacity)
+- onPress, onPressIn, onPressOut, style : 누를때, 누르기 시작시, 손을 뗄때, 스타일
+
+```tsx
+import React from 'react';
+import {
+  Alert,
+  Pressable,
+  SafeAreaView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
+
+const AboutScreen = (): JSX.Element => {
+  return (
+    <SafeAreaView style={styles.container}>
+      <View>
+        <Text>About 내용</Text>
+        <Pressable
+          onPress={() => console.log('onPress')}
+          onPressIn={() => console.log('onPressIn')}
+          onPressOut={() => console.log('onPressOut')}
+          style={({pressed}) => ({
+            backgroundColor: pressed ? 'red' : 'green',
+            padding: 10,
+          })}>
+          <Text>버튼</Text>
+        </Pressable>
+      </View>
+    </SafeAreaView>
+  );
+};
+// css
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  viewStyle: {
+    flex: 1,
+  },
+  input: {
+    borderWidth: 1,
+    padding: 10,
+    margin: 5,
+  },
+});
+export default AboutScreen;
+```
 
 ## ActivityIndicator
 
+- 로딩 컴포넌트
+- size, color : 크기는 "large", "small"
+
+```tsx
+import React, {useEffect, useState} from 'react';
+import {
+  ActivityIndicator,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
+
+const AboutScreen = (): JSX.Element => {
+  // 로딩 플래그
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 3000);
+
+    // 클린업
+    return () => {
+      clearTimeout(timer);
+    };
+  }, []);
+  return (
+    <SafeAreaView style={styles.container}>
+      <View>
+        <Text>About 내용</Text>
+        {loading ? (
+          <>
+            <ActivityIndicator size={'large'} color={'hotpink'} />
+            <Text>로딩중....</Text>
+          </>
+        ) : (
+          <Text>로딩완료</Text>
+        )}
+      </View>
+    </SafeAreaView>
+  );
+};
+// css
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  viewStyle: {
+    flex: 1,
+  },
+  input: {
+    borderWidth: 1,
+    padding: 10,
+    margin: 5,
+  },
+});
+export default AboutScreen;
+```
+
 ## Switch
 
+- 토글 기능
+- value : 현재 useState 의 값(true/false)
+- onValueChange : 토글이 될 때마다 실행됨.
+- thumbColor : 버튼에 색상
+- trackColor : 배경에 색상
+
+```tsx
+import React, {useState} from 'react';
+import {SafeAreaView, StyleSheet, Switch, Text, View} from 'react-native';
+
+const AboutScreen = (): JSX.Element => {
+  // 토글에서 관리될 state
+  const [isEnabled, setIsEnabled] = useState(false);
+  return (
+    <SafeAreaView
+      style={[
+        styles.container,
+        {backgroundColor: isEnabled ? '#000000' : '#ffffff'},
+      ]}>
+      <View style={styles.viewContainer}>
+        <Text style={[styles.text, {color: isEnabled ? '#ffffff' : '#000000'}]}>
+          {isEnabled ? '다크 모드입니다' : '라이트 모드입니다.'}
+        </Text>
+        <Switch
+          value={isEnabled}
+          onValueChange={val => setIsEnabled(val)}
+          thumbColor={'#ff0000'}
+          trackColor={{false: 'hotpink', true: 'yellow'}}
+        />
+      </View>
+    </SafeAreaView>
+  );
+};
+// css
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  viewContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  text: {
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+});
+export default AboutScreen;
+```
+
 ## Picker
+
+- 드롭다운 (리스트)
+- https://docs.expo.dev/versions/latest/sdk/picker/
+
+```bash
+npm i @react-native-picker/picker
+```
+
+```bash
+npm start
+```
+
+```bash
+a
+```
+
+- selectedValue : 선택값
+- onValueChange : 값이 바뀔때 마다 실행
+- mode : 스타일 ("dialog", "dropdown")
+- enabled : 비활성 여부
+- `<Picker.Item label="사과" value={'apple'} />`
+
+```tsx
+import {Picker} from '@react-native-picker/picker';
+import React, {useState} from 'react';
+import {SafeAreaView, StyleSheet, Text, View} from 'react-native';
+
+const AboutScreen = (): JSX.Element => {
+  // 초기 선택된 목록관련 state
+  const [selected, setSelected] = useState<string>('banana');
+  return (
+    <SafeAreaView style={styles.container}>
+      <View>
+        <Text>목록에서 선택하시오.</Text>
+        <View>
+          <Picker
+            selectedValue={selected}
+            onValueChange={itemValue => setSelected(itemValue)}
+            mode="dialog">
+            <Picker.Item label="사과" value={'apple'} />
+            <Picker.Item label="바나나" value={'banana'} />
+            <Picker.Item label="배" value={'bae'} />
+            <Picker.Item label="참외" value={'melon'} />
+          </Picker>
+        </View>
+        <Text style={{color: 'red'}}>선택한 과일: {selected}</Text>
+      </View>
+    </SafeAreaView>
+  );
+};
+// css
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});
+export default AboutScreen;
+```
+
+# 상식
+
+## `i18n` 에 대한 상식
+
+- 국제화를 의미하는 약어
+- 앱이나 웹사이트에서 여러 언어를 지원하기 위한 기술/방식
+- Internationalization → I + 18글자 + N = i18n
+- react-i18next i18next i18next-browser-languagedetector 등
+- react-native-localize (기기 언어 감지용)
