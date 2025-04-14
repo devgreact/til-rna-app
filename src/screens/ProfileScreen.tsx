@@ -68,7 +68,7 @@ export default function ProfileScreen() {
   // ✅ 데이터 불러오기
   const loadTask = async () => {
     try {
-      const stored = await AsyncStorage.getItem(STORAGE_KEY);
+      const stored = await AsyncStorage.getItem('@tasks3');
       if (stored === null) {
         return;
       }
@@ -93,12 +93,16 @@ export default function ProfileScreen() {
   useEffect(() => {
     const saveTask = async () => {
       try {
-        await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
+        const saveData = JSON.stringify(tasks);
+        console.log('saveData : ', saveData);
+        await AsyncStorage.setItem('@tasks3', saveData);
       } catch (error) {
         console.error('데이터 저장 실패:', error);
       }
     };
-    saveTask();
+    if (tasks.length > 0) {
+      saveTask();
+    }
   }, [tasks]);
 
   // ✅ 마운트 시 데이터 불러오기
